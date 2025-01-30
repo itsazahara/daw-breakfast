@@ -41,5 +41,7 @@ public class Review {
 	
 	@Column(columnDefinition = "TEXT(200)")
 	private String comentarios;
+	
+	//NO TERMINADO
 
 }
