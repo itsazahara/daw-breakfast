@@ -48,5 +48,15 @@ public class UsuarioService {
 
 		return result;
 	}
+	
+	public Usuario updatePassword(int idUsuario, String newPassword) {
+		
+		Usuario usuario = this.usuarioRepository.findById(idUsuario).get();
+		
+		usuario.setPassword(newPassword);
+		
+		return this.usuarioRepository.save(usuario);
+		
+	}
 
 }
