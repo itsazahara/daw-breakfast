@@ -12,13 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.daw.persistence.entities.Usuario;
 import com.daw.service.UsuarioService;
 
-import jakarta.persistence.Entity;
-
-@Entity
+@RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
 	
@@ -67,7 +66,16 @@ public class UsuarioController {
 		return ResponseEntity.notFound().build();
 	}
 	
-	
+	@PutMapping("/{idUsuario}/password")
+	public ResponseEntity<Usuario> updatePasswd(@PathVariable int idUsuario, @RequestBody String newPassword) {
+		
+		if(this.usuarioService.existUsuario(idUsuario)) {
+			return ResponseEntity.ok(this.usuarioService.updatePassword(idUsuario, newPassword));
+		}
+		
+		return ResponseEntity.notFound().build();
+		
+	}
 	
 	
 }
