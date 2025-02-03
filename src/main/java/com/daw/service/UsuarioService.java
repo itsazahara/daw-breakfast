@@ -58,5 +58,15 @@ public class UsuarioService {
 		return this.usuarioRepository.save(usuario);
 		
 	}
+	
+	public Boolean checkPassword(int idUsuario, String password) {
+		
+		Usuario usuario = this.usuarioRepository.findById(idUsuario).get();
+		
+		boolean check = usuario.getPassword().equals(password);
+		
+		return check;
+		
+	}
 
 }

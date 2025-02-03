@@ -77,5 +77,24 @@ public class UsuarioController {
 		
 	}
 	
+	@PostMapping("/{idUsuario}/checkPassword")
+	public ResponseEntity<String> checkPasswd(@PathVariable int idUsuario, @RequestBody String password) {
+		
+		if(this.usuarioService.existUsuario(idUsuario)) {
+			boolean passwdCheck = this.usuarioService.checkPassword(idUsuario, password);
+			
+			if(passwdCheck) {
+				
+				return ResponseEntity.ok("Contraseña Coincide Correctamente.");
+				
+			} else {
+				this.usuarioService.updatePassword(idUsuario, password);
+				return ResponseEntity.badRequest().body("La Contraseña No Coincide."); 
+			}
+		}
+		
+		return ResponseEntity.notFound().build();
+	}
+	
 	
 }
