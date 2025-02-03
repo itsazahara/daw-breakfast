@@ -2,10 +2,15 @@ package com.daw.persistence.entities;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +47,12 @@ public class Review {
 	@Column(columnDefinition = "TEXT(200)")
 	private String comentarios;
 	
-	//NO TERMINADO
-
+	@ManyToOne
+	@JoinColumn(name = "id_usuario", referencedColumnName = "id", insertable = false, updatable = false)
+	private Usuario usuario;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_deayuno", referencedColumnName = "id", insertable = false, updatable = false)
+	private Desayuno desayuno;
+	
 }

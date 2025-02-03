@@ -1,6 +1,7 @@
 package com.daw.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.daw.persistence.entities.Review;
 import com.daw.persistence.entities.Usuario;
 import com.daw.persistence.repository.ReviewRepository;
+import com.daw.service.dtos.ReviewDTO;
 
 @Service
 public class ReviewService {
@@ -22,6 +24,35 @@ public class ReviewService {
 	public List<ReviewDTO> getReviewsByBreakfast(Integer idDesayuno) {
         return reviewRepository.findByDesayunoId(idDesayuno);
     }
+	
+	public ReviewDTO findById(int idReview) {
+		return ReviewMapper.toDto(this.reviewRepository.findById(idReview).get());
+	}
+	
+	public Optional<Review> findByIdEntity(int idReview) {
+		return this.reviewRepository.findById(idReview);
+	}
+	
+	public boolean existsReview(int idReview) {
+		return this.reviewRepository.existsById(idReview);
+	}
+	
+	public Review update(Review review) {
+		return this.reviewRepository.save(review);
+	}
+	
+	public boolean delete(int idReview) {
+		boolean result = false;
+
+		if (this.reviewRepository.existsById(idReview)) {
+			this.reviewRepository.deleteById(idReview);
+			result = true;
+		}
+
+		return result;
+	}
+	
+	
 	
 	//NO TERMINADO
 	
