@@ -14,7 +14,5 @@ public interface ReviewRepository extends ListCrudRepository<Review, Integer>{
 	List<Review> findAllByOrderByPuntuacionDesc();
 	List<Review> findByDesayunoOrderByFechaCreacionDesc(Desayuno desayuno);
 	List<Review> findByDesayunoOrderByPuntuacionDesc(Desayuno desayuno);
-	
-	//NO TERMINADO
 
 }
