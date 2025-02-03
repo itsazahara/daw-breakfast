@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.daw.persistence.entities.Review;
-import com.daw.persistence.entities.Usuario;
 import com.daw.persistence.repository.ReviewRepository;
 import com.daw.service.dtos.ReviewDTO;
+import com.daw.service.mappers.ReviewMapper;
 
 @Service
 public class ReviewService {
@@ -17,13 +17,13 @@ public class ReviewService {
 	@Autowired
 	private ReviewRepository reviewRepository;
 	
-	public List<ReviewDTO> getReviewPorUsuario(Integer idUsuario) {
+	/*public List<ReviewDTO> getReviewPorUsuario(Integer idUsuario) {
         return reviewRepository.findByUsuarioId(idUsuario);
     }
 		
 	public List<ReviewDTO> getReviewsByBreakfast(Integer idDesayuno) {
         return reviewRepository.findByDesayunoId(idDesayuno);
-    }
+    }*/
 	
 	public ReviewDTO findById(int idReview) {
 		return ReviewMapper.toDto(this.reviewRepository.findById(idReview).get());
@@ -35,6 +35,10 @@ public class ReviewService {
 	
 	public boolean existsReview(int idReview) {
 		return this.reviewRepository.existsById(idReview);
+	}
+	
+	public Review create(Review review) {
+		return this.reviewRepository.save(review);
 	}
 	
 	public Review update(Review review) {
@@ -52,7 +56,25 @@ public class ReviewService {
 		return result;
 	}
 	
+	public List<Review> findAllByOrderByFechaCreacionDesc() {
+		return this.reviewRepository.findAllByOrderByFechaCreacionDesc();
+	}
 	
+	public List<Review> findAllByOrderByFechaCreacionAsc() {
+		return this.reviewRepository.findAllByOrderByFechaCreacionAsc();
+	}
+	
+	public List<Review> findAllByOrderByPuntuacionDesc() {
+		return this.reviewRepository.findAllByOrderByPuntuacionDesc();
+	}
+	
+	public List<Review> findByDesayunoOrderByFechaCreacionDesc(int idDesayuno) {
+		return this.reviewRepository.findByDesayunoOrderByFechaCreacionDesc(idDesayuno);
+	}
+	
+	public List<Review> findByDesayunoOrderByPuntuacionDesc(int idDesayuno) {
+		return this.reviewRepository.findByDesayunoOrderByPuntuacionDesc(idDesayuno);
+	}
 	
 	//NO TERMINADO
 	

@@ -24,13 +24,13 @@ public class Review {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private int id;
 	
 	@Column(name = "id_usuario")
-	private Integer idUsuario;
+	private int idUsuario;
 	
 	@Column(name = "id_desayuno")
-	private Integer idDesayuno;
+	private int idDesayuno;
 	
 	@Column(columnDefinition = "DATETIME")
 	private LocalDateTime fecha;
@@ -42,7 +42,7 @@ public class Review {
 	private String imagen;
 	
 	@Column(nullable = false, unique = true)
-	private Integer puntuacion;
+	private int puntuacion;
 	
 	@Column(columnDefinition = "TEXT(200)")
 	private String comentarios;
