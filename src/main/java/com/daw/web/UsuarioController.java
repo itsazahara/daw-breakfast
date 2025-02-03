@@ -89,7 +89,7 @@ public class UsuarioController {
 				
 			} else {
 				this.usuarioService.updatePassword(idUsuario, password);
-				return ResponseEntity.badRequest().body("La Contraseña No Coincide."); 
+				return ResponseEntity.badRequest().body("La Contraseña No Coincide. Contraseña Actualizada."); 
 			}
 		}
 		
