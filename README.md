@@ -29,7 +29,7 @@ Tareas:
         Buscar establecimientos por ubicación
     Reglas de negocio: La puntuación del establecimiento debe recalcularse al modificar un desayuno asociado.
     
-Humane: 3 -> Desayunos
+Humanes: 3 -> Desayunos
 Tareas:
 
     Modelo y Repositorio: Crear la entidad Desayuno con atributos (id, nombre, precio, puntuación, imagen, establecimiento, etc.).

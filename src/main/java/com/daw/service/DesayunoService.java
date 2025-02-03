@@ -28,6 +28,8 @@ public class DesayunoService {
     }
 
     public Desayuno create(Desayuno desayuno){
+        desayuno.setPuntuacion(0.0);
+        desayuno.setImagen("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuGbZQa0K6RcMzEEnIcozJKd6Cu8wGBk8ThA&s");
         return this.desayunoRepository.save(desayuno);
     }
 

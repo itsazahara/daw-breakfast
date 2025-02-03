@@ -28,4 +28,7 @@ public class Desayuno {
     @Column(columnDefinition = "DECIMAL(3,2)")
     private Double puntuacion;
 
+
+    @ManyToOne
+    private Establecimiento establecimiento;
 }

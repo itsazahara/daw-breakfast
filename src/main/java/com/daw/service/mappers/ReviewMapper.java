@@ -10,5 +10,6 @@ public class ReviewMapper {
 		
 		dto.setId(review.getId());
 
+		return dto;
 	}
 }

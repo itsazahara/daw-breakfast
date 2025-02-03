@@ -52,7 +52,7 @@ public class Review {
 	private Usuario usuario;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_deayuno", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "id_desayuno", referencedColumnName = "id", insertable = false, updatable = false)
 	private Desayuno desayuno;
 	
 }
