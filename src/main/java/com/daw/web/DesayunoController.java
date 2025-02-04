@@ -2,11 +2,12 @@ package com.daw.web;
 
 import com.daw.persistence.entities.Desayuno;
 import com.daw.service.DesayunoService;
+import com.daw.service.dtos.DesayunoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -19,12 +20,12 @@ public class DesayunoController {
     private DesayunoService desayunoService;
 
     @GetMapping
-    public ResponseEntity<List<Desayuno>> findAll(){
-        return ResponseEntity.ok((List<Desayuno>) this.desayunoService.listAll());
+    public ResponseEntity<List<DesayunoDTO>> findAll(){
+        return ResponseEntity.ok((List<DesayunoDTO>) this.desayunoService.listAll());
     }
 
     @GetMapping("/{idDesayuno}")
-    public ResponseEntity<Optional<Desayuno>> findDesayunoById(@PathVariable int idDesayuno){
+    public ResponseEntity<Optional<DesayunoDTO>> findDesayunoById(@PathVariable int idDesayuno){
 
         if(this.desayunoService.existDesayuno(idDesayuno)){
             return ResponseEntity.ok(this.desayunoService.findById(idDesayuno));

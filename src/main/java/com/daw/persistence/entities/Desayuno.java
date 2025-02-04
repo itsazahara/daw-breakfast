@@ -1,9 +1,12 @@
 package com.daw.persistence.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "desayuno")
@@ -16,13 +19,13 @@ public class Desayuno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(columnDefinition = "VARCHAR(100)")
+    @Column(length = 100)
     private String nombre;
 
     @Column(columnDefinition = "DECIMAL(5,2)")
     private Double precio;
 
-    @Column(columnDefinition = "VARCHAR(255)")
+    @Column(length = 255)
     private String imagen;
 
     @Column(columnDefinition = "DECIMAL(3,2)")
@@ -30,5 +33,10 @@ public class Desayuno {
 
 
     @ManyToOne
+    @JoinColumn(name = "id_establecimiento", referencedColumnName = "id", insertable = false, updatable = false)
     private Establecimiento establecimiento;
+
+    @OneToMany(mappedBy = "reviews", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Review> reviews;
 }
