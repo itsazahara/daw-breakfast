@@ -1,11 +1,14 @@
 package com.daw.web;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,6 +53,19 @@ public class ReviewController {
 
 	    return new ResponseEntity<Review>(this.reviewService.create(review), HttpStatus.CREATED);
 	}
+	
+	// ✅ Modificar una review (terminado)
+	@PutMapping("/{idReview}")
+	public ResponseEntity<Review> update(@PathVariable int idReview, @RequestBody Review review) {
+		if (idReview != review.getId()) {
+			return ResponseEntity.badRequest().build();
+		}
+		if (!this.reviewService.existsReview(idReview)) {
+			return ResponseEntity.notFound().build();
+		}
+
+		return ResponseEntity.ok(this.reviewService.update(review));
+	}
 
 	/*// Obtener todas las reviews de un usuario
 	@GetMapping("/usuario/{usuarioId}")
@@ -70,20 +86,7 @@ public class ReviewController {
 
 	
 
-	// ✅ Modificar una review
-	@PutMapping("/{id}")
-	public ResponseEntity<Review> updateReview(@PathVariable Long id, @RequestBody Review reviewDetails) {
-		Optional<Review> reviewOptional = reviewRepository.findById(id);
-		if (reviewOptional.isPresent()) {
-			Review review = reviewOptional.get();
-			review.setPuntuacion(reviewDetails.getPuntuacion());
-			review.setComentario(reviewDetails.getComentario());
-			Review updatedReview = reviewRepository.save(review);
-			return ResponseEntity.ok(updatedReview);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
+	
 
 	// ✅ Borrar una review
 	@DeleteMapping("/{id}")
