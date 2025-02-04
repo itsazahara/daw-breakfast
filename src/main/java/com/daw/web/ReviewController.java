@@ -1,22 +1,17 @@
 package com.daw.web;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.daw.persistence.entities.Desayuno;
 import com.daw.persistence.entities.Review;
-import com.daw.persistence.repository.DesayunoRepository;
 import com.daw.persistence.repository.ReviewRepository;
 import com.daw.service.DesayunoService;
 import com.daw.service.ReviewService;
@@ -45,10 +40,21 @@ public class ReviewController {
 
 		return ResponseEntity.notFound().build();
 	}
+	
+	// Crear una review (terminado)
+	@PostMapping
+	public ResponseEntity<Review> create(@RequestBody Review review, @RequestParam int idDesayuno) {
+	    if (!this.desayunoService.existDesayuno(idDesayuno)) {
+	        return ResponseEntity.notFound().build();
+	    }
+
+	    return new ResponseEntity<Review>(this.reviewService.create(review), HttpStatus.CREATED);
+	}
 
 	/*// Obtener todas las reviews de un usuario
 	@GetMapping("/usuario/{usuarioId}")
-	public ResponseEntity<List<Review>> getReviewsByUsuario(@PathVariable Long usuarioId) {
+	public Respons
+	eEntity<List<Review>> getReviewsByUsuario(@PathVariable Long usuarioId) {
 		Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
 		return usuario.map(u -> ResponseEntity.ok(reviewRepository.findByUsuario(u)))
 				.orElse(ResponseEntity.notFound().build());
@@ -62,15 +68,7 @@ public class ReviewController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 
-	// ✅ Crear una review
-	@PostMapping
-	public ResponseEntity<Review> createReview(@RequestBody Review review) {
-		if (review.getPuntuacion() < 0 || review.getPuntuacion() > 5) {
-			return ResponseEntity.badRequest().body(null);
-		}
-		Review nuevaReview = reviewRepository.save(review);
-		return ResponseEntity.ok(nuevaReview);
-	}
+	
 
 	// ✅ Modificar una review
 	@PutMapping("/{id}")
