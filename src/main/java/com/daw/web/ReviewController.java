@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,7 +55,7 @@ public class ReviewController {
 	    return new ResponseEntity<Review>(this.reviewService.create(review), HttpStatus.CREATED);
 	}
 	
-	// ✅ Modificar una review (terminado)
+	// Modificar una review (terminado)
 	@PutMapping("/{idReview}")
 	public ResponseEntity<Review> update(@PathVariable int idReview, @RequestBody Review review) {
 		if (idReview != review.getId()) {
@@ -65,6 +66,16 @@ public class ReviewController {
 		}
 
 		return ResponseEntity.ok(this.reviewService.update(review));
+	}
+	
+	// Borrar una review (terminado)
+	@DeleteMapping("/{idReview}")
+	public ResponseEntity<Review> delete(@PathVariable int idReview) {
+		if (this.reviewService.delete(idReview)) {
+			return ResponseEntity.ok().build();
+		}
+
+		return ResponseEntity.notFound().build();
 	}
 
 	/*// Obtener todas las reviews de un usuario
@@ -84,20 +95,8 @@ public class ReviewController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 
-	
 
 	
-
-	// ✅ Borrar una review
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteReview(@PathVariable int id) {
-		if (ReviewRepository.existsById(id)) {
-			ReviewRepository.deleteById(id);
-			return ResponseEntity.noContent().build();
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
 
 	// Obtener reviews ordenadas por fecha (más recientes)
 	@GetMapping("/ordenadas/fecha/recientes")
