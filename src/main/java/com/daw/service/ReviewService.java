@@ -17,9 +17,10 @@ public class ReviewService {
 	@Autowired
 	private ReviewRepository reviewRepository;
 	
-	/*public List<ReviewDTO> getReviewPorUsuario(Integer idUsuario) {
+	//Hay que recorrer la lista para convertir la review en reviewdto
+	public List<ReviewDTO> getReviewPorUsuario(int idUsuario) {
         return reviewRepository.findByUsuarioId(idUsuario);
-    }*/
+    }
 		
 	public List<ReviewDTO> getReviewsByDesayuno(int idDesayuno) {
         return reviewRepository.findByDesayunoId(idDesayuno);
@@ -76,6 +77,6 @@ public class ReviewService {
 		return this.reviewRepository.findByDesayunoOrderByPuntuacionDesc(idDesayuno);
 	}
 	
-	//NO TERMINADO
+	//NO TERMINADO (?)
 	
 }

@@ -19,5 +19,7 @@ public class ReviewDTO {
 	private String comentarios;
 	private String username;
 	private String email;
+	private String nombreDesayuno;
+	private String nombreEstablecimiento;
 
 }

@@ -95,9 +95,6 @@ public class ReviewController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 
-
-	
-
 	// Obtener reviews ordenadas por fecha (más recientes)
 	@GetMapping("/ordenadas/fecha/recientes")
 	public List<Review> getReviewsOrderByFechaRecientes() {
