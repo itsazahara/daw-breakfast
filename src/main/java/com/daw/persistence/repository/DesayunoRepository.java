@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface DesayunoRepository extends JpaRepository<Desayuno,Integer> {
 
-    List<Desayuno> findByDesayunoOrderByPuntuacionAsc();
-    List<Desayuno> findByDesayunoOrderByPuntuacionEstablecimientoContaining();
-
+    List<Desayuno> findAllByDesayunoOrderByPuntuacionAsc();
+    List<Desayuno> findAllByEstablecimientoOrderByPuntuacionDesc(int idEstablecimiento);
+    List<Desayuno> findAllByEstablecimientoOrderByPrecioAsc();
+    List<Desayuno> findAllByEstablecimiento(int idEstablecimiento);
 }
