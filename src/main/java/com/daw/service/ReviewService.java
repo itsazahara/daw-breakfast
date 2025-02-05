@@ -26,7 +26,7 @@ public class ReviewService {
 		
 	public List<ReviewDTO> getReviewsByDesayuno(int idDesayuno) {
         return reviewRepository.findByDesayunoId(idDesayuno);
-    }
+    }*/
 	
 	public ReviewDTO findById(int idReview) {
 		return ReviewMapper.toDto(this.reviewRepository.findById(idReview).get());
