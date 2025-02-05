@@ -10,6 +10,7 @@ import lombok.Setter;
 public class EstablecimientoDTO {
 	private int id;
     private String nombre;
+    private String descripcion;
     private String ubicacion;
     private double puntuacion;
 }
