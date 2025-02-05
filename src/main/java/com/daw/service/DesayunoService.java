@@ -60,6 +60,18 @@ public class DesayunoService {
 
 
     public List<Desayuno> findByDesayunoPuntuacion(){
-        return this.desayunoRepository.findByDesayunoOrderByPuntuacionAsc();
+        return this.desayunoRepository.findAllByDesayunoOrderByPuntuacionAsc();
+    }
+
+    public List<Desayuno> findByPuntuacionDesayunoEstablecimiento(int idEstablecimiento){
+        return this.desayunoRepository.findAllByEstablecimientoOrderByPuntuacionDesc(idEstablecimiento);
+    }
+
+    public List<Desayuno> findByDesayunoOrderByPrecio(){
+        return this.desayunoRepository.findAllByEstablecimientoOrderByPrecioAsc();
+    }
+
+    public List<Desayuno> findByDesayunosEstablecimiento(int idEstablecimiento){
+        return this.desayunoRepository.findAllByEstablecimiento(idEstablecimiento);
     }
 }
