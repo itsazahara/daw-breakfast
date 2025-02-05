@@ -67,8 +67,8 @@ public class DesayunoController {
     }
 
     @GetMapping("/precios/establecimientos")
-    public ResponseEntity<List<Desayuno>> getDesayunosOrderByPrecioEstablecimiento(){
-        return ResponseEntity.ok(this.desayunoService.findByDesayunoOrderByPrecio());
+    public ResponseEntity<List<Desayuno>> getDesayunosOrderByPrecioEstablecimiento(@PathVariable int idEstablecimiento){
+        return ResponseEntity.ok(this.desayunoService.findByDesayunoOrderByPrecio(idEstablecimiento));
     }
 
     @GetMapping("/establecimiento/{idEstablecimiento}")

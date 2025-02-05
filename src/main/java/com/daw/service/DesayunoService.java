@@ -60,18 +60,18 @@ public class DesayunoService {
 
 
     public List<Desayuno> findByDesayunoPuntuacion(){
-        return this.desayunoRepository.findAllByDesayunoOrderByPuntuacionAsc();
+        return this.desayunoRepository.findAllByOrderByPuntuacionDesc();
     }
 
     public List<Desayuno> findByPuntuacionDesayunoEstablecimiento(int idEstablecimiento){
-        return this.desayunoRepository.findAllByEstablecimientoOrderByPuntuacionDesc(idEstablecimiento);
+        return this.desayunoRepository.findAllByEstablecimientoIdOrderByPuntuacionDesc(idEstablecimiento);
     }
 
-    public List<Desayuno> findByDesayunoOrderByPrecio(){
-        return this.desayunoRepository.findAllByEstablecimientoOrderByPrecioAsc();
+    public List<Desayuno> findByDesayunoOrderByPrecio(int idEstablecimiento){
+        return this.desayunoRepository.findAllByEstablecimientoIdOrderByPrecioAsc(idEstablecimiento);
     }
 
-    public List<Desayuno> findByDesayunosEstablecimiento(int idEstablecimiento){
-        return this.desayunoRepository.findAllByEstablecimiento(idEstablecimiento);
+   public List<Desayuno> findByDesayunosEstablecimiento(int idEstablecimiento){
+        return this.desayunoRepository.findAllByEstablecimientoId(idEstablecimiento);
     }
 }
