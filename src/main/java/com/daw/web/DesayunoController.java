@@ -55,4 +55,24 @@ public class DesayunoController {
 
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/puntos")
+    public ResponseEntity<List<Desayuno>> getDesayunosOrderByPuntuacion(){
+        return ResponseEntity.ok(this.desayunoService.findByDesayunoPuntuacion());
+    }
+
+    @GetMapping("/puntos/{idEstablecimiento}")
+    public ResponseEntity<List<Desayuno>> getDesayunosOrderByPuntuacionEstablecimiento(@PathVariable int idEstablecimiento){
+        return ResponseEntity.ok(this.desayunoService.findByPuntuacionDesayunoEstablecimiento(idEstablecimiento));
+    }
+
+    @GetMapping("/precios/establecimientos")
+    public ResponseEntity<List<Desayuno>> getDesayunosOrderByPrecioEstablecimiento(){
+        return ResponseEntity.ok(this.desayunoService.findByDesayunoOrderByPrecio());
+    }
+
+    @GetMapping("/establecimiento/{idEstablecimiento}")
+    public ResponseEntity<List<Desayuno>> getDesayunoByEstablecimiento(@PathVariable int idEstablecimiento){
+        return ResponseEntity.ok(this.desayunoService.findByDesayunosEstablecimiento(idEstablecimiento));
+    }
 }
