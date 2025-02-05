@@ -18,13 +18,13 @@ public class ReviewService {
 	private ReviewRepository reviewRepository;
 	
 	//Hay que recorrer la lista para convertir la review en reviewdto
-	public List<ReviewDTO> getReviewPorUsuario(int idUsuario) {
+	/*public List<ReviewDTO> getReviewPorUsuario(int idUsuario) {
         return reviewRepository.findByUsuarioId(idUsuario);
     }
 		
 	public List<ReviewDTO> getReviewsByDesayuno(int idDesayuno) {
         return reviewRepository.findByDesayunoId(idDesayuno);
-    }
+    }*/
 	
 	public ReviewDTO findById(int idReview) {
 		return ReviewMapper.toDto(this.reviewRepository.findById(idReview).get());
