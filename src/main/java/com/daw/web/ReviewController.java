@@ -1,7 +1,7 @@
 package com.daw.web;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,6 +43,9 @@ public class ReviewController {
 	
 	@Autowired
 	private DesayunoRepository desayunoRepository;
+	
+	@Autowired
+	private ReviewRepository reviewRepository;
 	
 	// Obtener todas las reviews (terminado)
 	@GetMapping
@@ -92,57 +95,63 @@ public class ReviewController {
 
 		return ResponseEntity.notFound().build();
 	}
-
-	/*// Obtener todas las reviews de un usuario
-	@GetMapping("/usuario/{usuarioId}")
-	public Respons
-	eEntity<List<Review>> getReviewsByUsuario(@PathVariable Long usuarioId) {
-		Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
-		return usuario.map(u -> ResponseEntity.ok(reviewRepository.findByUsuario(u)))
-				.orElse(ResponseEntity.notFound().build());
-	}
-
-	// ✅ Obtener todas las reviews de un desayuno
-	@GetMapping("/desayuno/{desayunoId}")
-	public ResponseEntity<List<Review>> getReviewsByDesayuno(@PathVariable Long desayunoId) {
-		Optional<Desayuno> desayuno = desayunoRepository.findById(desayunoId);
-		return desayuno.map(d -> ResponseEntity.ok(reviewRepository.findByDesayuno(d)))
-				.orElse(ResponseEntity.notFound().build());
-	}
-
-	// Obtener reviews ordenadas por fecha (más recientes)
+	
+	// Obtener reviews ordenadas por fecha (más recientes) (terminado)
 	@GetMapping("/ordenadas/fecha/recientes")
 	public List<Review> getReviewsOrderByFechaRecientes() {
-		return ReviewRepository.findAllByOrderByFechaCreacionDesc();
+		return reviewRepository.findAllByOrderByFechaDesc();
 	}
-
-	// ✅ Obtener reviews ordenadas por fecha (más antiguas)
+	
+	// Obtener reviews ordenadas por fecha (más antiguas) (terminado)
 	@GetMapping("/ordenadas/fecha/antiguas")
 	public List<Review> getReviewsOrderByFechaAntiguas() {
-		return reviewRepository.findAllByOrderByFechaCreacionAsc();
+		return reviewRepository.findAllByOrderByFechaAsc();
 	}
-
-	// ✅ Obtener reviews ordenadas por puntuación (de mayor a menor)
+	
+	// Obtener reviews ordenadas por puntuación (de mayor a menor) (terminado)
 	@GetMapping("/ordenadas/puntuacion")
 	public List<Review> getReviewsOrderByPuntuacion() {
 		return reviewRepository.findAllByOrderByPuntuacionDesc();
 	}
-
-	// Obtener reviews recientes de un desayuno específico
-	@GetMapping("/desayuno/{desayunoId}/recientes")
-	public ResponseEntity<List<Review>> getReviewsRecientesByDesayuno(@PathVariable Long desayunoId) {
-		Optional<Desayuno> desayuno = desayunoRepository.findById(desayunoId);
-		return desayuno.map(d -> ResponseEntity.ok(reviewRepository.findByDesayunoOrderByFechaCreacionDesc(d)))
-				.orElse(ResponseEntity.notFound().build());
-	}
-
-	// Obtener reviews por puntuación de mayor a menor de un determinado desayuno
-	@GetMapping("/desayuno/{idDesayuno}/puntuacion")
-	public ResponseEntity<List<Review>> getReviewsByPuntuacionByDesayuno(@PathVariable Integer idDesayuno) {
-		Optional<Desayuno> desayuno = DesayunoRepository.findById(idDesayuno);
-		return desayuno.map(d -> ResponseEntity.ok(reviewRepository.findByDesayunoOrderByPuntuacionDesc(d)))
-				.orElse(ResponseEntity.notFound().build());
-	}
-	*/
+	
+	
+		
+	/*
+	 * // Obtener todas las reviews de un usuario
+	 * 
+	 * @GetMapping("/usuario/{usuarioId}") public List<ReviewDTO>
+	 * getReviewsByUsuario(@PathVariable int idUsuario) { List<Review> reviews =
+	 * reviewService.getReviewByUsuario(idUsuario); List<ReviewDTO> reviewDTOs = new
+	 * ArrayList<>(); for (Review review : reviews) {
+	 * reviewDTOs.add(reviewMapper.toDTO (review)); }
+	 * 
+	 * return reviewDTOs; }
+	 * 
+	 * // Obtener todas las reviews de un desayuno
+	 * 
+	 * @GetMapping("/desayuno/{desayunoId}") public ResponseEntity<List<Review>>
+	 * getReviewsByDesayuno(@PathVariable Long desayunoId) { Optional<Desayuno>
+	 * desayuno = desayunoRepository.findById(desayunoId); return desayuno.map(d ->
+	 * ResponseEntity.ok(reviewRepository.findByDesayuno(d)))
+	 * .orElse(ResponseEntity.notFound().build()); }
+	 * 
+	 * // Obtener reviews recientes de un desayuno específico
+	 * 
+	 * @GetMapping("/desayuno/{desayunoId}/recientes") public
+	 * ResponseEntity<List<Review>> getReviewsRecientesByDesayuno(@PathVariable Long
+	 * desayunoId) { Optional<Desayuno> desayuno =
+	 * desayunoRepository.findById(desayunoId); return desayuno.map(d ->
+	 * ResponseEntity.ok(reviewRepository.findByDesayunoOrderByFechaCreacionDesc(d))
+	 * ) .orElse(ResponseEntity.notFound().build()); }
+	 * 
+	 * // Obtener reviews por puntuación de mayor a menor de un determinado desayuno
+	 * 
+	 * @GetMapping("/desayuno/{idDesayuno}/puntuacion") public
+	 * ResponseEntity<List<Review>> getReviewsByPuntuacionByDesayuno(@PathVariable
+	 * Integer idDesayuno) { Optional<Desayuno> desayuno =
+	 * DesayunoRepository.findById(idDesayuno); return desayuno.map(d ->
+	 * ResponseEntity.ok(reviewRepository.findByDesayunoOrderByPuntuacionDesc(d)))
+	 * .orElse(ResponseEntity.notFound().build()); }
+	 */
 
 }

@@ -7,8 +7,8 @@ import org.springframework.data.repository.ListCrudRepository;
 import com.daw.persistence.entities.Review;
 import com.daw.service.dtos.ReviewDTO;
 
-public interface ReviewRepository extends ListCrudRepository<Review, Integer>{
-	
+public interface ReviewRepository extends ListCrudRepository<Review, Integer> {
+
 	List<Review> findByUsuarioId(int idUsuario);
 	List<Review> findByDesayunoId(int idDesayuno);
 	List<Review> findAllByOrderByFechaDesc();
