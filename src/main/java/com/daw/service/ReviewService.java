@@ -16,17 +16,18 @@ public class ReviewService {
 	
 	@Autowired
 	private ReviewRepository reviewRepository;
-
-
 	
-	//Hay que recorrer la lista para convertir la review en reviewdto
-	/*public List<ReviewDTO> getReviewPorUsuario(int idUsuario) {
+	public List<Review> findAll() {
+		return this.reviewRepository.findAll();
+	}
+	
+	public List<Review> getReviewPorUsuario(int idUsuario) {
         return reviewRepository.findByUsuarioId(idUsuario);
     }
-		
-	public List<ReviewDTO> getReviewsByDesayuno(int idDesayuno) {
+	
+	public List<Review> getReviewsByDesayuno(int idDesayuno) {
         return reviewRepository.findByDesayunoId(idDesayuno);
-    }*/
+    }
 	
 	public ReviewDTO findById(int idReview) {
 		return ReviewMapper.toDto(this.reviewRepository.findById(idReview).get());
@@ -78,7 +79,5 @@ public class ReviewService {
 	public List<Review> findByDesayunoOrderByPuntuacionDesc(int idDesayuno) {
 		return this.reviewRepository.findByDesayunoOrderByPuntuacionDesc(idDesayuno);
 	}
-	
-	//NO TERMINADO (?)
-	
+		
 }

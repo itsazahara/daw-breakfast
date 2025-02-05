@@ -1,5 +1,6 @@
 package com.daw.web;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.daw.persistence.entities.Review;
+import com.daw.persistence.repository.DesayunoRepository;
 import com.daw.persistence.repository.ReviewRepository;
 import com.daw.service.DesayunoService;
 import com.daw.service.ReviewService;
 import com.daw.service.UsuarioService;
 import com.daw.service.dtos.ReviewDTO;
+import com.daw.service.mappers.ReviewMapper;
 
 @RestController
 @RequestMapping("/review")
@@ -34,16 +37,28 @@ public class ReviewController {
 
 	@Autowired
 	private DesayunoService desayunoService;
+	
+	@Autowired
+	private ReviewMapper reviewMapper;
+	
+	@Autowired
+	private DesayunoRepository desayunoRepository;
+	
+	// Obtener todas las reviews (terminado)
+	@GetMapping
+	public ResponseEntity<List<Review>> list() {
+		return ResponseEntity.ok(this.reviewService.findAll());
+	}
 
 	// Obtener una review por su ID (terminado)
-	/*@GetMapping("/{idReview}")
+	@GetMapping("/{idReview}")
 	public ResponseEntity<ReviewDTO> findById(@PathVariable int idReview){
 		if (this.reviewService.existsReview(idReview)) {
 			return ResponseEntity.ok(this.reviewService.findById(idReview));
 		}
 
 		return ResponseEntity.notFound().build();
-	}*/
+	}
 	
 	// Crear una review (terminado)
 	@PostMapping
@@ -121,12 +136,13 @@ public class ReviewController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 
-	 Obtener reviews por puntuación de mayor a menor de un determinado desayuno
+	// Obtener reviews por puntuación de mayor a menor de un determinado desayuno
 	@GetMapping("/desayuno/{idDesayuno}/puntuacion")
-	public ResponseEntity<List<Review>> getReviewsByPuntuacionByDesayuno(@PathVariable int idDesayuno) {
+	public ResponseEntity<List<Review>> getReviewsByPuntuacionByDesayuno(@PathVariable Integer idDesayuno) {
 		Optional<Desayuno> desayuno = DesayunoRepository.findById(idDesayuno);
 		return desayuno.map(d -> ResponseEntity.ok(reviewRepository.findByDesayunoOrderByPuntuacionDesc(d)))
 				.orElse(ResponseEntity.notFound().build());
-	}*/
+	}
+	*/
 
 }
