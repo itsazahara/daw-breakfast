@@ -72,12 +72,12 @@ public class ReviewService {
 		return this.reviewRepository.findAllByOrderByPuntuacionDesc();
 	}
 	
-	public List<Review> findByDesayunoOrderByFechaCreacionDesc(int idDesayuno) {
-		return this.reviewRepository.findByDesayunoOrderByFechaDesc(idDesayuno);
+	public List<Review> findByDesayunoIdOrderByFechaDesc(int idDesayuno) {
+		return this.reviewRepository.findByDesayunoIdOrderByFechaDesc(idDesayuno);
 	}
 	
-	public List<Review> findByDesayunoOrderByPuntuacionDesc(int idDesayuno) {
-		return this.reviewRepository.findByDesayunoOrderByPuntuacionDesc(idDesayuno);
+	public List<Review> findByDesayunoIdOrderByPuntuacionDesc(int idDesayuno) {
+		return this.reviewRepository.findByDesayunoIdOrderByPuntuacionDesc(idDesayuno);
 	}
 		
 }

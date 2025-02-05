@@ -1,8 +1,11 @@
 package com.daw.service.mappers;
 
+import org.springframework.stereotype.Component;
+
 import com.daw.persistence.entities.Review;
 import com.daw.service.dtos.ReviewDTO;
 
+@Component
 public class ReviewMapper {
 
 	public static ReviewDTO toDto(Review review) {
