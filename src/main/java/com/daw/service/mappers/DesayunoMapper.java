@@ -24,9 +24,17 @@ public class DesayunoMapper {
 
         List<ReviewDTO>reviews = new ArrayList<ReviewDTO>();
 
-        for(Review w: desayuno.getReviews()){
-            dto.setReviews(reviews);
+        for (Review review : desayuno.getReviews()) {
+            ReviewDTO reviewDTO = new ReviewDTO();
+            // Asumiendo que tienes un método toDTO en Review o configuras ReviewDTO manualmente
+            reviewDTO.setId(review.getId());
+            reviewDTO.setFecha(review.getFecha());
+            reviewDTO.setPuntuacion(review.getPuntuacion());
+            // Agrega más campos si es necesario
+            reviews.add(reviewDTO);
         }
+
+        dto.setReviews(reviews);
 
         return dto;
     }

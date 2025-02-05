@@ -16,9 +16,11 @@ public class ReviewService {
 	
 	@Autowired
 	private ReviewRepository reviewRepository;
+
+
 	
 	//Hay que recorrer la lista para convertir la review en reviewdto
-	public List<ReviewDTO> getReviewPorUsuario(int idUsuario) {
+	/*public List<ReviewDTO> getReviewPorUsuario(int idUsuario) {
         return reviewRepository.findByUsuarioId(idUsuario);
     }
 		
@@ -28,7 +30,7 @@ public class ReviewService {
 	
 	public ReviewDTO findById(int idReview) {
 		return ReviewMapper.toDto(this.reviewRepository.findById(idReview).get());
-	}
+	}*/
 	
 	public Optional<Review> findByIdEntity(int idReview) {
 		return this.reviewRepository.findById(idReview);
@@ -58,11 +60,11 @@ public class ReviewService {
 	}
 	
 	public List<Review> findAllByOrderByFechaCreacionDesc() {
-		return this.reviewRepository.findAllByOrderByFechaCreacionDesc();
+		return this.reviewRepository.findAllByOrderByFechaDesc();
 	}
 	
 	public List<Review> findAllByOrderByFechaCreacionAsc() {
-		return this.reviewRepository.findAllByOrderByFechaCreacionAsc();
+		return this.reviewRepository.findAllByOrderByFechaAsc();
 	}
 	
 	public List<Review> findAllByOrderByPuntuacionDesc() {
@@ -70,7 +72,7 @@ public class ReviewService {
 	}
 	
 	public List<Review> findByDesayunoOrderByFechaCreacionDesc(int idDesayuno) {
-		return this.reviewRepository.findByDesayunoOrderByFechaCreacionDesc(idDesayuno);
+		return this.reviewRepository.findByDesayunoOrderByFechaDesc(idDesayuno);
 	}
 	
 	public List<Review> findByDesayunoOrderByPuntuacionDesc(int idDesayuno) {

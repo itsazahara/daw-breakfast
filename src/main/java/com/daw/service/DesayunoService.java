@@ -56,4 +56,10 @@ public class DesayunoService {
 
         return result;
     }
+
+
+
+    public List<Desayuno> findByDesayunoPuntuacion(){
+        return this.desayunoRepository.findByDesayunoOrderByPuntuacionAsc();
+    }
 }

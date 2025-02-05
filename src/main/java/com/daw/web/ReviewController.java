@@ -36,14 +36,14 @@ public class ReviewController {
 	private DesayunoService desayunoService;
 
 	// Obtener una review por su ID (terminado)
-	@GetMapping("/{idReview}")
+	/*@GetMapping("/{idReview}")
 	public ResponseEntity<ReviewDTO> findById(@PathVariable int idReview){
 		if (this.reviewService.existsReview(idReview)) {
 			return ResponseEntity.ok(this.reviewService.findById(idReview));
 		}
 
 		return ResponseEntity.notFound().build();
-	}
+	}*/
 	
 	// Crear una review (terminado)
 	@PostMapping

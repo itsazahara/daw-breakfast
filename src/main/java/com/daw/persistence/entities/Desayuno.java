@@ -36,7 +36,7 @@ public class Desayuno {
     @JoinColumn(name = "id_establecimiento", referencedColumnName = "id", insertable = false, updatable = false)
     private Establecimiento establecimiento;
 
-    @OneToMany(mappedBy = "reviews", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "desayuno", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Review> reviews;
 }

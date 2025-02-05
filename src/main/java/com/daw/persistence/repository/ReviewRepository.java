@@ -11,10 +11,10 @@ public interface ReviewRepository extends ListCrudRepository<Review, Integer>{
 	
 	List<Review> findByUsuarioId(int idUsuario);
 	List<Review> findByDesayunoId(int idDesayuno);
-	List<Review> findAllByOrderByFechaCreacionDesc();
-	List<Review> findAllByOrderByFechaCreacionAsc();
+	List<Review> findAllByOrderByFechaDesc();
+	List<Review> findAllByOrderByFechaAsc();
 	List<Review> findAllByOrderByPuntuacionDesc();
-	List<Review> findByDesayunoOrderByFechaCreacionDesc(int idDesayuno);
+	List<Review> findByDesayunoOrderByFechaDesc(int idDesayuno);
 	List<Review> findByDesayunoOrderByPuntuacionDesc(int idDesayuno);
 
 }
