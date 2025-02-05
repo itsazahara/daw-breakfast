@@ -30,7 +30,7 @@ public class ReviewService {
 	
 	public ReviewDTO findById(int idReview) {
 		return ReviewMapper.toDto(this.reviewRepository.findById(idReview).get());
-	}*/
+	}
 	
 	public Optional<Review> findByIdEntity(int idReview) {
 		return this.reviewRepository.findById(idReview);
