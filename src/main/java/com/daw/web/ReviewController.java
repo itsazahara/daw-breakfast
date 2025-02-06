@@ -98,20 +98,20 @@ public class ReviewController {
 	
 	// Obtener reviews ordenadas por fecha (más recientes) (terminado)
 	@GetMapping("/ordenadas/fecha/recientes")
-	public List<Review> getReviewsOrderByFechaRecientes() {
-		return reviewRepository.findAllByOrderByFechaDesc();
+	public ResponseEntity<List<Review>> getReviewsOrderByFechaRecientes() {
+		return ResponseEntity.ok(reviewServices.findAllByOrderByFechaDesc());
 	}
 	
 	// Obtener reviews ordenadas por fecha (más antiguas) (terminado)
 	@GetMapping("/ordenadas/fecha/antiguas")
-	public List<Review> getReviewsOrderByFechaAntiguas() {
-		return reviewRepository.findAllByOrderByFechaAsc();
+	public ResponseEntity<List<Review>> getReviewsOrderByFechaAntiguas() {
+		return ResponseEntity.ok(reviewServices.findAllByOrderByFechaAsc());
 	}
 	
 	// Obtener reviews ordenadas por puntuación (de mayor a menor) (terminado)
 	@GetMapping("/ordenadas/puntuacion")
-	public List<Review> getReviewsOrderByPuntuacion() {
-		return reviewRepository.findAllByOrderByPuntuacionDesc();
+	public ResponseEntity<List<Review>> getReviewsOrderByPuntuacion() {
+		return ResponseEntity.ok(reviewServices.findAllByOrderByPuntuacionDesc());
 	}
 	
 	
