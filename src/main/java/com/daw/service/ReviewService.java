@@ -6,7 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.daw.persistence.entities.Desayuno;
+import com.daw.persistence.entities.Establecimiento;
 import com.daw.persistence.entities.Review;
+import com.daw.persistence.repository.DesayunoRepository;
+import com.daw.persistence.repository.EstablecimientoRepository;
 import com.daw.persistence.repository.ReviewRepository;
 import com.daw.service.dtos.ReviewDTO;
 import com.daw.service.mappers.ReviewMapper;
@@ -16,6 +20,12 @@ public class ReviewService {
 
 	@Autowired
 	private ReviewRepository reviewRepository;
+
+	@Autowired
+	private DesayunoRepository desayunoRepository;
+
+	@Autowired
+	private EstablecimientoRepository establecimientoRepository;
 
 	public List<Review> findAll() {
 		return this.reviewRepository.findAll();
@@ -42,29 +52,49 @@ public class ReviewService {
 	}
 
 	public Review create(Review review) {
-		return this.reviewRepository.save(review);
+		// Validación de la puntuación
+		if (review.getPuntuacion() < 0 || review.getPuntuacion() > 5) {
+			throw new IllegalArgumentException("La puntuación debe estar entre 0 y 5.");
+		}
+
+		Review savedReview = this.reviewRepository.save(review);
+		recalcularPuntuacion(savedReview.getIdDesayuno());
+
+		return savedReview;
 	}
 
 	public Review update(Review review) {
-		return this.reviewRepository.save(review);
+		if (review.getPuntuacion() < 0 || review.getPuntuacion() > 5) {
+			throw new IllegalArgumentException("La puntuación debe estar entre 0 y 5.");
+		}
+
+		Review updatedReview = this.reviewRepository.save(review);
+		recalcularPuntuacion(updatedReview.getIdDesayuno());
+
+		return updatedReview;
 	}
 
 	public boolean delete(int idReview) {
 		boolean result = false;
 
-		if (this.reviewRepository.existsById(idReview)) {
+		Optional<Review> review = this.reviewRepository.findById(idReview);
+		if (review.isPresent()) {
+			Review reviewToDelete = review.get();
+
 			this.reviewRepository.deleteById(idReview);
+			recalcularPuntuacion(reviewToDelete.getIdDesayuno());
+
 			result = true;
 		}
 
 		return result;
 	}
 
-	public List<Review> findAllByOrderByFechaCreacionDesc() {
+	public List<Review> findAllByOrderByFechaDesc() {
 		return this.reviewRepository.findAllByOrderByFechaDesc();
 	}
 
-	public List<Review> findAllByOrderByFechaCreacionAsc() {
+	public List<Review> findAllByOrderByFechaAsc() {
 		return this.reviewRepository.findAllByOrderByFechaAsc();
 	}
 
@@ -72,12 +102,32 @@ public class ReviewService {
 		return this.reviewRepository.findAllByOrderByPuntuacionDesc();
 	}
 
-	public List<Review> findByDesayunoIdOrderByFechaDesc(int idDesayuno) {
-		return this.reviewRepository.findByDesayunoIdOrderByFechaDesc(idDesayuno);
+	public List<Review> getReviewsRecienteByDesayuno(int idDesayuno) {
+		return reviewRepository.findByDesayunoIdOrderByFechaDesc(idDesayuno);
 	}
 
-	public List<Review> findByDesayunoIdOrderByPuntuacionDesc(int idDesayuno) {
-		return this.reviewRepository.findByDesayunoIdOrderByPuntuacionDesc(idDesayuno);
+	public List<Review> getReviewsByPuntuacionDesc(int idDesayuno) {
+		return reviewRepository.findByDesayunoIdOrderByPuntuacionDesc(idDesayuno);
+	}
+
+	private void recalcularPuntuacion(int idDesayuno) {
+		List<Review> reviews = this.reviewRepository.findByDesayunoId(idDesayuno);
+
+		double promedioDesayuno = reviews.stream().mapToInt(Review::getPuntuacion).average().orElse(0.0);
+
+		Desayuno desayuno = desayunoRepository.findById(idDesayuno).orElseThrow();
+		desayuno.setPuntuacion(promedioDesayuno);
+		desayunoRepository.save(desayuno);
+
+		Establecimiento establecimiento = desayuno.getEstablecimiento();
+
+		List<Review> reviewsEstablecimiento = this.reviewRepository.findByDesayunoId(desayuno.getId());
+
+		double promedioEstablecimiento = reviewsEstablecimiento.stream().mapToInt(Review::getPuntuacion).average()
+				.orElse(0.0);
+
+		establecimiento.setPuntuacion(promedioEstablecimiento);
+		establecimientoRepository.save(establecimiento);
 	}
 
 }

@@ -2,12 +2,10 @@ package com.daw.persistence.repository;
 
 import java.util.List;
 
-import org.springframework.data.repository.ListCrudRepository;
-
+import org.springframework.data.jpa.repository.JpaRepository;
 import com.daw.persistence.entities.Review;
-import com.daw.service.dtos.ReviewDTO;
 
-public interface ReviewRepository extends ListCrudRepository<Review, Integer> {
+public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
 	List<Review> findByUsuarioId(int idUsuario);
 	List<Review> findByDesayunoId(int idDesayuno);

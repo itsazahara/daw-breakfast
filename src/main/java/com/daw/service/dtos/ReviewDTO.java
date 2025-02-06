@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ReviewDTO {
-	
+
 	private Integer id;
 	private LocalDateTime fecha;
 	private Double precio;
