@@ -114,7 +114,14 @@ public class ReviewController {
 		return ResponseEntity.ok(reviewServices.findAllByOrderByPuntuacionDesc());
 	}
 	
-	
+	// Obtener todas las reviews de un usuario (comprobar si funciona) (no terminado)
+	@GetMapping("/usuario/{usuarioId}")
+	public ResponseEntity<List<Review>> getReviewByUsuario(@PathVariable int idUsuario){
+		return ResponseEntity.ok(this.reviewService.findByUsuarioId(idUsuario));
+	}
+
+	// Obtener todas las reviews de un desayuno
+	// ¿Tendría que llamar al dto de desayuno en este endpoint?
 		
 	/*
 	 * // Obtener todas las reviews de un usuario
