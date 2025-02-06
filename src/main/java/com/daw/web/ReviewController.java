@@ -138,17 +138,17 @@ public class ReviewController {
 	 * // Obtener reviews recientes de un desayuno específico
 	 * 
 	 * @GetMapping("/desayuno/{desayunoId}/recientes") public
-	 * ResponseEntity<List<Review>> getReviewsRecientesByDesayuno(@PathVariable Long
-	 * desayunoId) { Optional<Desayuno> desayuno =
-	 * desayunoRepository.findById(desayunoId); return desayuno.map(d ->
-	 * ResponseEntity.ok(reviewRepository.findByDesayunoOrderByFechaCreacionDesc(d))
+	 * ResponseEntity<List<Review>> getReviewsRecientesByDesayuno(@PathVariable int
+	 * idDesayuno) { Optional<Desayuno> desayuno =
+	 * desayunoRepository.findById(idDesayuno); return desayuno.map(d ->
+	 * ResponseEntity.ok(reviewRepository.findByDesayunoIdOrderByFechaDesc(d))
 	 * ) .orElse(ResponseEntity.notFound().build()); }
 	 * 
 	 * // Obtener reviews por puntuación de mayor a menor de un determinado desayuno
 	 * 
 	 * @GetMapping("/desayuno/{idDesayuno}/puntuacion") public
 	 * ResponseEntity<List<Review>> getReviewsByPuntuacionByDesayuno(@PathVariable
-	 * Integer idDesayuno) { Optional<Desayuno> desayuno =
+	 * int idDesayuno) { Optional<Desayuno> desayuno =
 	 * DesayunoRepository.findById(idDesayuno); return desayuno.map(d ->
 	 * ResponseEntity.ok(reviewRepository.findByDesayunoOrderByPuntuacionDesc(d)))
 	 * .orElse(ResponseEntity.notFound().build()); }
