@@ -33,7 +33,7 @@ public class Desayuno {
 
 
     @ManyToOne
-    @JoinColumn(name = "id_establecimiento", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "id_establecimiento", referencedColumnName = "id")
     private Establecimiento establecimiento;
 
     @OneToMany(mappedBy = "desayuno", orphanRemoval = true, cascade = CascadeType.ALL)
