@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.daw.persistence.entities.Establecimiento;
 import com.daw.persistence.repository.EstablecimientoRepository;
+import com.daw.service.dtos.EstablecimientoDTO;
+import com.daw.service.mappers.EstablecimientoMapper;
+
 
 @Service
 public class EstablecimientoService {
@@ -15,41 +18,47 @@ public class EstablecimientoService {
 	@Autowired
 	private EstablecimientoRepository establecimientoRepository;
 	
-	// CRUDs
-	public List<Establecimiento> findAll(){
-		return this.establecimientoRepository.findAll();
+	@Autowired
+	private EstablecimientoMapper mapper;
+	
+	public List<EstablecimientoDTO> findAll(){
+		List<Establecimiento> establecimientos = this.establecimientoRepository.findAll();
+		return mapper.toDTOList(establecimientos);
 	}
 	
 	public boolean existsEstablecimiento(int idEstablecimiento){
 		return this.establecimientoRepository.existsById(idEstablecimiento);
 	}
 	
-	public Optional<Establecimiento> findById(int idEstablecimiento){
-		return this.establecimientoRepository.findById(idEstablecimiento);
+	public Optional<EstablecimientoDTO> findById(int idEstablecimiento){
+		Optional<Establecimiento> establecimiento = this.establecimientoRepository.findById(idEstablecimiento);
+		return establecimiento.map(mapper::toDTO);
 	}
 	
-	public Establecimiento create(Establecimiento establecimiento) {
-		return this.establecimientoRepository.save(establecimiento);
+	public EstablecimientoDTO create(EstablecimientoDTO dto) {
+		Establecimiento establecimiento = mapper.toEntity(dto);
+		return mapper.toDTO(this.establecimientoRepository.save(establecimiento));
 	}
 	
-	public Establecimiento save(Establecimiento establecimiento) {
-		return this.establecimientoRepository.save(establecimiento);
+	public EstablecimientoDTO save(EstablecimientoDTO dto) {
+		Establecimiento establecimiento = mapper.toEntity(dto);
+		return mapper.toDTO(this.establecimientoRepository.save(establecimiento));
 	}
 	
 	public boolean delete(int idEstablecimiento) {
-		boolean result = false;
-		
 		if(this.establecimientoRepository.existsById(idEstablecimiento)) {
 			this.establecimientoRepository.deleteById(idEstablecimiento);
-			result = true;
+			return true;
 		}
-		
-		return result;
+		return false;
 	}
 	
-	public List<Establecimiento> getByUbicacion(String ubicacion) {
-		return this.establecimientoRepository.findByUbicacion(ubicacion);
+	public List<EstablecimientoDTO> getByUbicacion(String ubicacion) {
+		return mapper.toDTOList(this.establecimientoRepository.findByUbicacion(ubicacion));
+	}
+
+	public List<EstablecimientoDTO> getOrderedByPuntuacion() {
+		return mapper.toDTOList(this.establecimientoRepository.findAllByOrderByPuntuacionDesc());
 	}
 }
-
 
