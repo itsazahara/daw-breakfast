@@ -3,6 +3,7 @@ package com.daw.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.daw.service.mappers.UsuarioMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,10 @@ public class UsuarioService {
 	}
 
 	public Usuario updateUsuario(Usuario usuario) {
+
+		if(usuario.getId() == null){
+			throw  new IllegalArgumentException("El usuario con ID " + usuario.getId() + " es nulo");
+		}
 		return this.usuarioRepository.save(usuario);
 	}
 
@@ -48,15 +53,14 @@ public class UsuarioService {
 
 		return result;
 	}
-	
-	public Usuario updatePassword(Usuario usuario) {
-	    return usuarioRepository.save(usuario);
-	}
-	
+
+
+
 	public Usuario updatePasswordCheck(int idUsuario, String newPassword) {
+
 	    Usuario usuario = this.usuarioRepository.findById(idUsuario).get();
 	    usuario.setPassword(newPassword);
-	    
+		UsuarioMapper.toDto(usuario);
 	    return this.usuarioRepository.save(usuario);
 	}
 

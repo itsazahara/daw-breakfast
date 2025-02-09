@@ -8,8 +8,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UsuarioDTO {
-	
+
+	private int id;
 	private String password;
-	private String newPassword;
+
 
 }

@@ -66,7 +66,7 @@ public class DesayunoController {
         return ResponseEntity.ok(this.desayunoService.findByPuntuacionDesayunoEstablecimiento(idEstablecimiento));
     }
 
-    @GetMapping("/precios/establecimientos")
+    @GetMapping("/precios/establecimientos/{idEstablecimiento}")
     public ResponseEntity<List<Desayuno>> getDesayunosOrderByPrecioEstablecimiento(@PathVariable int idEstablecimiento){
         return ResponseEntity.ok(this.desayunoService.findByDesayunoOrderByPrecio(idEstablecimiento));
     }

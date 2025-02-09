@@ -5,14 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.daw.persistence.entities.Usuario;
 import com.daw.service.UsuarioService;
@@ -69,31 +62,33 @@ public class UsuarioController {
 	}
 	
 	@PutMapping("/{idUsuario}/password")
-	public ResponseEntity<Usuario> updatePasswd(@PathVariable int idUsuario, @RequestBody UsuarioDTO usuarioDTO) {
+	public ResponseEntity<Usuario> updatePasswd(@PathVariable int idUsuario, @RequestBody UsuarioDTO usuarioDTO, @RequestParam String newPassword) {
 	    if (this.usuarioService.existUsuario(idUsuario)) {
 	        Usuario usuario = usuarioService.findByIdUsuario(idUsuario).get();
-	        UsuarioMapper.toEntity(usuarioDTO, usuario);
-	        return ResponseEntity.ok(this.usuarioService.updatePassword(usuario));
+	        UsuarioMapper.toEntity(usuarioDTO);
+	        return ResponseEntity.ok(this.usuarioService.updatePasswordCheck(idUsuario, newPassword));
 	    }
 	    return ResponseEntity.notFound().build();
 	}
 
 	
 	@PostMapping("/{idUsuario}/checkPassword")
-	public ResponseEntity<String> checkPasswd(@PathVariable int idUsuario, @RequestBody UsuarioDTO usuarioDTO) {
+	public ResponseEntity<String> checkPasswd(@PathVariable int idUsuario, @RequestBody UsuarioDTO usuarioDTO, @RequestParam String newPassword) {
 	    if (this.usuarioService.existUsuario(idUsuario)) {
 	        boolean passwdCheck = this.usuarioService.checkPassword(idUsuario, usuarioDTO.getPassword());
 
-	        if (!passwdCheck) {
+	        if (passwdCheck) {
 	            return ResponseEntity.ok("Contraseña Coincide Correctamente.");
 	        } else {
-	            this.usuarioService.updatePasswordCheck(idUsuario, usuarioDTO.getNewPassword());
+	            this.usuarioService.updatePasswordCheck(idUsuario, newPassword);
 	            return ResponseEntity.badRequest().body("La Contraseña No Coincide. Contraseña Actualizada.");
 	        }
 	    }
 
 	    return ResponseEntity.notFound().build();
 	}
+
+
 
 	
 	

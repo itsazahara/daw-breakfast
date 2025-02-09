@@ -11,19 +11,21 @@ public class UsuarioMapper {
 	public static UsuarioDTO toDto(Usuario usuario) {
 		
 		UsuarioDTO dto = new UsuarioDTO();
-		
+
+		dto.setId(usuario.getId());
 		dto.setPassword(usuario.getPassword());
-		dto.setNewPassword("");
+
 		
 		return dto;
 		
 	}
 	
-	public static Usuario toEntity(UsuarioDTO dto, Usuario usuario) {
-		
-        if (dto.getPassword() != null) {
-            usuario.setPassword(dto.getNewPassword());
-        }
+	public static Usuario toEntity(UsuarioDTO dto) {
+
+		Usuario usuario = new Usuario();
+
+		usuario.setId(dto.getId());
+        usuario.setPassword(dto.getPassword());
         
         return usuario;
     }

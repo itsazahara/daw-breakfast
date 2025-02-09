@@ -2,8 +2,10 @@ package com.daw.service;
 
 import com.daw.persistence.entities.Desayuno;
 import com.daw.persistence.entities.Establecimiento;
+import com.daw.persistence.entities.Review;
 import com.daw.persistence.repository.DesayunoRepository;
 import com.daw.persistence.repository.EstablecimientoRepository;
+import com.daw.persistence.repository.ReviewRepository;
 import com.daw.service.dtos.DesayunoDTO;
 import com.daw.service.mappers.DesayunoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class DesayunoService {
 
     @Autowired
     private EstablecimientoRepository establecimientoRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
 
 
     public List<DesayunoDTO> listAll(){
@@ -57,6 +62,7 @@ public class DesayunoService {
         
         Desayuno nuevoDesayuno = this.desayunoRepository.save(desayuno);
         recalcularPuntuacionEstablecimiento(desayuno.getEstablecimiento().getId());
+        recalcularPuntuacionDesayuno(desayuno.getId());
         return nuevoDesayuno;
     }
 
@@ -67,6 +73,7 @@ public class DesayunoService {
         
         Desayuno desayunoActualizado = this.desayunoRepository.save(desayuno);
         recalcularPuntuacionEstablecimiento(desayuno.getEstablecimiento().getId());
+        recalcularPuntuacionDesayuno(desayuno.getId());
         return desayunoActualizado;
     }
 
@@ -79,6 +86,7 @@ public class DesayunoService {
         Desayuno desayuno = optionalDesayuno.get();
         int idEstablecimiento = desayuno.getEstablecimiento().getId();
         this.desayunoRepository.deleteById(idDesayuno);
+        recalcularPuntuacionDesayuno(idDesayuno);
         recalcularPuntuacionEstablecimiento(idEstablecimiento);
         return true;
     }
@@ -101,7 +109,7 @@ public class DesayunoService {
         return this.desayunoRepository.findAllByEstablecimientoId(idEstablecimiento);
     }
    
-   private void recalcularPuntuacionEstablecimiento(int idEstablecimiento) {
+   public void recalcularPuntuacionEstablecimiento(int idEstablecimiento) {
        Optional<Establecimiento> optionalEstablecimiento = establecimientoRepository.findById(idEstablecimiento);
        if (optionalEstablecimiento.isPresent()) {
            Establecimiento establecimiento = optionalEstablecimiento.get();
@@ -114,5 +122,16 @@ public class DesayunoService {
            establecimientoRepository.save(establecimiento);
        }
    }
+
+
+    public void recalcularPuntuacionDesayuno(int idDesayuno) {
+        Desayuno desayuno = this.desayunoRepository.findById(idDesayuno).get();
+
+        List<Review> reviewDesayuno = this.reviewRepository.findByDesayunoId(idDesayuno);
+        double promedioDesayuno = reviewDesayuno.stream().mapToDouble(Review::getPuntuacion).average().orElse(0.0);
+        desayuno.setPuntuacion(promedioDesayuno);
+        this.desayunoRepository.save(desayuno);
+    }
+
 }
 
