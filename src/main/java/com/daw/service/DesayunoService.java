@@ -1,7 +1,9 @@
 package com.daw.service;
 
 import com.daw.persistence.entities.Desayuno;
+import com.daw.persistence.entities.Establecimiento;
 import com.daw.persistence.repository.DesayunoRepository;
+import com.daw.persistence.repository.EstablecimientoRepository;
 import com.daw.service.dtos.DesayunoDTO;
 import com.daw.service.mappers.DesayunoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class DesayunoService {
     @Autowired
     private DesayunoMapper desayunoMapper;
 
+    @Autowired
+    private EstablecimientoRepository establecimientoRepository;
+
 
     public List<DesayunoDTO> listAll(){
         return this.desayunoRepository.findAll().stream().map(desayunoMapper::toDTO).collect(Collectors.toList());
@@ -33,28 +38,49 @@ public class DesayunoService {
         return this.desayunoRepository.existsById(idDesayuno);
     }
 
-    public Desayuno create(Desayuno desayuno){
-        desayuno.setPuntuacion(0.0);
-        if(desayuno.getImagen() == null){
+    public Desayuno create(Desayuno desayuno) {
+
+        if (desayuno.getImagen() == null || desayuno.getPuntuacion() == null) {
+            desayuno.setPuntuacion(0.0);
             desayuno.setImagen("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuGbZQa0K6RcMzEEnIcozJKd6Cu8wGBk8ThA&s");
         }
 
-        return this.desayunoRepository.save(desayuno);
+        if (desayuno.getEstablecimiento() != null && desayuno.getEstablecimiento().getId() != null) {
+            Establecimiento establecimiento = establecimientoRepository
+                    .findById(desayuno.getEstablecimiento().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("El establecimiento con ID " + desayuno.getEstablecimiento().getId() + " no existe."));
+
+            desayuno.setEstablecimiento(establecimiento);
+
+
+        }
+        
+        Desayuno nuevoDesayuno = this.desayunoRepository.save(desayuno);
+        recalcularPuntuacionEstablecimiento(desayuno.getEstablecimiento().getId());
+        return nuevoDesayuno;
     }
 
     public Desayuno update(Desayuno desayuno){
-        return this.desayunoRepository.save(desayuno);
+        if(desayuno.getId() == null){
+            throw new IllegalArgumentException("El desayuno con ID " + desayuno.getId() + " no existe");
+        }
+        
+        Desayuno desayunoActualizado = this.desayunoRepository.save(desayuno);
+        recalcularPuntuacionEstablecimiento(desayuno.getEstablecimiento().getId());
+        return desayunoActualizado;
     }
 
-    public boolean delete(int idDesayuno){
-        boolean result = false;
-
-        if(this.desayunoRepository.existsById(idDesayuno)){
-            this.desayunoRepository.deleteById(idDesayuno);
-            result = true;
+    public boolean delete(int idDesayuno) {
+        Optional<Desayuno> optionalDesayuno = this.desayunoRepository.findById(idDesayuno);
+        if (optionalDesayuno.isEmpty()) {
+            return false;
         }
 
-        return result;
+        Desayuno desayuno = optionalDesayuno.get();
+        int idEstablecimiento = desayuno.getEstablecimiento().getId();
+        this.desayunoRepository.deleteById(idDesayuno);
+        recalcularPuntuacionEstablecimiento(idEstablecimiento);
+        return true;
     }
 
 
@@ -74,4 +100,19 @@ public class DesayunoService {
    public List<Desayuno> findByDesayunosEstablecimiento(int idEstablecimiento){
         return this.desayunoRepository.findAllByEstablecimientoId(idEstablecimiento);
     }
+   
+   private void recalcularPuntuacionEstablecimiento(int idEstablecimiento) {
+       Optional<Establecimiento> optionalEstablecimiento = establecimientoRepository.findById(idEstablecimiento);
+       if (optionalEstablecimiento.isPresent()) {
+           Establecimiento establecimiento = optionalEstablecimiento.get();
+           List<Desayuno> desayunos = establecimiento.getDesayunos();
+
+           double nuevaPuntuacion = desayunos.stream().mapToDouble(Desayuno::getPuntuacion).average()
+                   .orElse(0.0);
+
+           establecimiento.setPuntuacion(nuevaPuntuacion);
+           establecimientoRepository.save(establecimiento);
+       }
+   }
 }
+

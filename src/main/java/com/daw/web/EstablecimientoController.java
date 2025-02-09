@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.daw.persistence.entities.Establecimiento;
 import com.daw.service.EstablecimientoService;
+import com.daw.service.dtos.EstablecimientoDTO;
 
 @RestController
 @RequestMapping("/establecimientos")
@@ -27,39 +27,38 @@ public class EstablecimientoController {
 	private EstablecimientoService establecimientoService;
 	
 	@GetMapping
-	public ResponseEntity<List<Establecimiento>> list(){
+	public ResponseEntity<List<EstablecimientoDTO>> list(){
 		return ResponseEntity.ok(this.establecimientoService.findAll());
 	}
 	
 	@GetMapping("/{idEstablecimiento}")
-	public ResponseEntity<Establecimiento> findById(@PathVariable int idEstablecimiento) {
-		Optional<Establecimiento> establecimiento = this.establecimientoService.findById(idEstablecimiento);
+	public ResponseEntity<EstablecimientoDTO> findById(@PathVariable int idEstablecimiento) {
+		Optional<EstablecimientoDTO> establecimiento = this.establecimientoService.findById(idEstablecimiento);
 		if(establecimiento.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
-		
 		return ResponseEntity.ok(establecimiento.get());
 	}
 	
 	@PostMapping
-	public ResponseEntity<Establecimiento> create(@RequestBody Establecimiento establecimiento){
-		return new ResponseEntity<>(this.establecimientoService.create(establecimiento), HttpStatus.CREATED);
+	public ResponseEntity<EstablecimientoDTO> create(@RequestBody EstablecimientoDTO establecimientoDTO){
+		return new ResponseEntity<>(this.establecimientoService.create(establecimientoDTO), HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{idEstablecimiento}")
-	public ResponseEntity<Establecimiento> update(@PathVariable int idEstablecimiento, @RequestBody Establecimiento establecimiento){
-		if(idEstablecimiento != establecimiento.getId()) {
+	public ResponseEntity<EstablecimientoDTO> update(@PathVariable int idEstablecimiento, @RequestBody EstablecimientoDTO establecimientoDTO){
+		if(idEstablecimiento != establecimientoDTO.getId()) {
 			return ResponseEntity.badRequest().build();
 		}
 		else if(!this.establecimientoService.existsEstablecimiento(idEstablecimiento)) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.ok(this.establecimientoService.save(establecimiento));
+		return ResponseEntity.ok(this.establecimientoService.save(establecimientoDTO));
 	}
 	
 	@DeleteMapping("/{idEstablecimiento}")
-	public ResponseEntity<Establecimiento> delete(@PathVariable int idEstablecimiento){
+	public ResponseEntity<Void> delete(@PathVariable int idEstablecimiento){
 		if(this.establecimientoService.delete(idEstablecimiento)) {
 			return ResponseEntity.ok().build();
 		}
@@ -68,7 +67,13 @@ public class EstablecimientoController {
 	}
 
 	@GetMapping("/ubicacion")
-	public ResponseEntity<List<Establecimiento>> findByUbicacion(@RequestParam String ubicacion){
+	public ResponseEntity<List<EstablecimientoDTO>> findByUbicacion(@RequestParam String ubicacion){
 		return ResponseEntity.ok(this.establecimientoService.getByUbicacion(ubicacion));
 	}
+
+	@GetMapping("/ordenados")
+	public ResponseEntity<List<EstablecimientoDTO>> getOrderedByPuntuacion(){
+		return ResponseEntity.ok(this.establecimientoService.getOrderedByPuntuacion());
+	}
+
 }

@@ -36,7 +36,7 @@ public class Establecimiento {
 	private String ubicacion;
 	
 	@Column(columnDefinition = "DECIMAL(3,2)", nullable = false)
-	private Double puntuacion;
+	private Double puntuacion = 0.0;
 	
 	@OneToMany(mappedBy = "establecimiento")
 	@JsonIgnore
