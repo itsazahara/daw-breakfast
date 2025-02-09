@@ -49,24 +49,24 @@ public class UsuarioService {
 		return result;
 	}
 	
-	public Usuario updatePassword(int idUsuario, String newPassword) {
-		
-		Usuario usuario = this.usuarioRepository.findById(idUsuario).get();
-		
-		usuario.setPassword(newPassword);
-		
-		return this.usuarioRepository.save(usuario);
-		
+	public Usuario updatePassword(Usuario usuario) {
+	    return usuarioRepository.save(usuario);
 	}
 	
-	public Boolean checkPassword(int idUsuario, String password) {
-		
-		Usuario usuario = this.usuarioRepository.findById(idUsuario).get();
-		
-		boolean check = usuario.getPassword().equals(password);
-		
-		return check;
-		
+	public Usuario updatePasswordCheck(int idUsuario, String newPassword) {
+	    Usuario usuario = this.usuarioRepository.findById(idUsuario).get();
+	    usuario.setPassword(newPassword);
+	    
+	    return this.usuarioRepository.save(usuario);
 	}
+
+
+	
+	public boolean checkPassword(int idUsuario, String password) {
+	    Usuario usuario = this.usuarioRepository.findById(idUsuario).get();
+	    
+	    return usuario.getPassword().equals(password);
+	}
+
 
 }
