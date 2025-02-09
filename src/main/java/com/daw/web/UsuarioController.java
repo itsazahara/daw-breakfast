@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.daw.persistence.entities.Usuario;
 import com.daw.service.UsuarioService;
+import com.daw.service.dtos.UsuarioDTO;
+import com.daw.service.mappers.UsuarioMapper;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 	
 	@Autowired 
@@ -67,34 +69,32 @@ public class UsuarioController {
 	}
 	
 	@PutMapping("/{idUsuario}/password")
-	public ResponseEntity<Usuario> updatePasswd(@PathVariable int idUsuario, @RequestBody String newPassword) {
-		
-		if(this.usuarioService.existUsuario(idUsuario)) {
-			return ResponseEntity.ok(this.usuarioService.updatePassword(idUsuario, newPassword));
-		}
-		
-		return ResponseEntity.notFound().build();
-		
+	public ResponseEntity<Usuario> updatePasswd(@PathVariable int idUsuario, @RequestBody UsuarioDTO usuarioDTO) {
+	    if (this.usuarioService.existUsuario(idUsuario)) {
+	        Usuario usuario = usuarioService.findByIdUsuario(idUsuario).get();
+	        UsuarioMapper.toEntity(usuarioDTO, usuario);
+	        return ResponseEntity.ok(this.usuarioService.updatePassword(usuario));
+	    }
+	    return ResponseEntity.notFound().build();
 	}
+
 	
 	@PostMapping("/{idUsuario}/checkPassword")
-	public ResponseEntity<String> checkPasswd(@PathVariable int idUsuario, @RequestBody String password) {
-		
-		if(this.usuarioService.existUsuario(idUsuario)) {
-			boolean passwdCheck = this.usuarioService.checkPassword(idUsuario, password);
-			
-			if(passwdCheck) {
-				
-				return ResponseEntity.ok("Contraseña Coincide Correctamente.");
-				
-			} else {
-				this.usuarioService.updatePassword(idUsuario, password);
-				return ResponseEntity.badRequest().body("La Contraseña No Coincide. Contraseña Actualizada."); 
-			}
-		}
-		
-		return ResponseEntity.notFound().build();
+	public ResponseEntity<String> checkPasswd(@PathVariable int idUsuario, @RequestBody UsuarioDTO usuarioDTO) {
+	    if (this.usuarioService.existUsuario(idUsuario)) {
+	        boolean passwdCheck = this.usuarioService.checkPassword(idUsuario, usuarioDTO.getPassword());
+
+	        if (!passwdCheck) {
+	            return ResponseEntity.ok("Contraseña Coincide Correctamente.");
+	        } else {
+	            this.usuarioService.updatePasswordCheck(idUsuario, usuarioDTO.getNewPassword());
+	            return ResponseEntity.badRequest().body("La Contraseña No Coincide. Contraseña Actualizada.");
+	        }
+	    }
+
+	    return ResponseEntity.notFound().build();
 	}
+
 	
 	
 }
