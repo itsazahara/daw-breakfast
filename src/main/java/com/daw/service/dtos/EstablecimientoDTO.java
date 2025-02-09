@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class EstablecimientoDTO {
-	private int id;
+	private Integer  id;
     private String nombre;
     private String descripcion;
     private String ubicacion;
