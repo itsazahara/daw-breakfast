@@ -3,12 +3,12 @@ package com.daw.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.daw.service.mappers.UsuarioMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.daw.persistence.entities.Usuario;
 import com.daw.persistence.repository.UsuarioRepository;
+import com.daw.service.mappers.UsuarioMapper;
 
 @Service
 public class UsuarioService {
@@ -54,23 +54,36 @@ public class UsuarioService {
 		return result;
 	}
 
-
-
-	public Usuario updatePasswordCheck(int idUsuario, String newPassword) {
+	public Usuario updatePassword(int idUsuario, String newPassword) {
 
 	    Usuario usuario = this.usuarioRepository.findById(idUsuario).get();
 	    usuario.setPassword(newPassword);
 		UsuarioMapper.toDto(usuario);
 	    return this.usuarioRepository.save(usuario);
 	}
-
+	
+	public Usuario updatePasswordCheck(int idUsuario, String newPassword) {
+	    Optional<Usuario> optionalUsuario = this.usuarioRepository.findById(idUsuario);
+	    if (optionalUsuario.isPresent()) {
+	        Usuario usuario = optionalUsuario.get();
+	        usuario.setPassword(newPassword);
+	        return this.usuarioRepository.save(usuario);
+	    } else {
+	        return null;
+	    }
+	}
 
 	
 	public boolean checkPassword(int idUsuario, String password) {
-	    Usuario usuario = this.usuarioRepository.findById(idUsuario).get();
-	    
-	    return usuario.getPassword().equals(password);
+	    Optional<Usuario> optionalUsuario = this.usuarioRepository.findById(idUsuario);
+	    if (optionalUsuario.isPresent()) {
+	        Usuario usuario = optionalUsuario.get();
+	        return usuario.getPassword().equals(password);
+	    } else {
+	        return false; // Devuelve false si no se encuentra el usuario
+	    }
 	}
+
 
 
 }
