@@ -97,12 +97,6 @@ public class ReviewController {
 		return ResponseEntity.ok(reviewService.findAllByOrderByPuntuacionDesc());
 	}
 
-	// Obtener todas las reviews de un usuario (terminado)
-	@GetMapping("/usuario/{usuarioId}")
-	public ResponseEntity<List<Review>> getReviewByUsuario(@PathVariable int idUsuario) {
-		return ResponseEntity.ok(this.reviewService.getReviewByUsuario(idUsuario));
-	}
-
 	// Obtener todas las reviews de un desayuno (terminado)
 	@GetMapping("/desayuno/{idDesayuno}/reviews")
 	public ResponseEntity<List<Review>> getReviewsByDesayuno(@PathVariable int idDesayuno) {
@@ -131,7 +125,5 @@ public class ReviewController {
 		List<Review> reviews = this.reviewService.getReviewsByPuntuacionDesc(idDesayuno);
 		return ResponseEntity.ok(reviews);
 	}
-
-	// SOLO FALTA COMPROBAR SI FUNCIONA
 
 }

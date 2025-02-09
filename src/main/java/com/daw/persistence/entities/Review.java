@@ -35,7 +35,7 @@ public class Review {
 	@Column(length = 255, nullable = false, unique = true)
 	private String imagen;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private int puntuacion;
 
 	@Column(columnDefinition = "TEXT(200)")
