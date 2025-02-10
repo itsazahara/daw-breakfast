@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,7 +39,7 @@ public class Establecimiento {
 	@Column(columnDefinition = "DECIMAL(3,2)", nullable = false)
 	private Double puntuacion = 0.0;
 	
-	@OneToMany(mappedBy = "establecimiento")
+	@OneToMany(mappedBy = "establecimiento", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Desayuno> desayunos;
 

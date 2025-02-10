@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import com.daw.persistence.entities.Desayuno;
 import com.daw.persistence.entities.Establecimiento;
 import com.daw.persistence.entities.Review;
+import com.daw.persistence.entities.Usuario;
 import com.daw.persistence.repository.DesayunoRepository;
 import com.daw.persistence.repository.EstablecimientoRepository;
 import com.daw.persistence.repository.ReviewRepository;
+import com.daw.service.dtos.DesayunoDTO;
 import com.daw.service.dtos.ReviewDTO;
 import com.daw.service.mappers.ReviewMapper;
 
@@ -26,6 +28,14 @@ public class ReviewService {
 
 	@Autowired
 	private EstablecimientoRepository establecimientoRepository;
+	
+	@Autowired
+	private DesayunoService desayunoService;
+	
+	@Autowired
+	private UsuarioService usuarioService;
+	
+	
 
 	public List<Review> findAll() {
 		return this.reviewRepository.findAll();
@@ -59,6 +69,11 @@ public class ReviewService {
 
 		Review savedReview = this.reviewRepository.save(review);
 		recalcularPuntuacion(savedReview.getIdDesayuno());
+		
+		Optional<DesayunoDTO> d = this.desayunoService.findById(review.getIdDesayuno());
+		Usuario u = this.usuarioService.findByIdUsuario(review.getIdUsuario()).get();
+		
+		this.usuarioService.createUsuario(u);
 
 		return savedReview;
 	}
