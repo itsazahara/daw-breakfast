@@ -87,14 +87,10 @@ public class UsuarioController {
 	        boolean passwdCheck = this.usuarioService.checkPassword(idUsuario, usuarioDTO.getPassword());
 
 	        if (!passwdCheck) {
-	            return ResponseEntity.ok("Contraseña Coincide Correctamente.");
+	            return ResponseEntity.ok("Contraseña coincide correctamente.");
 	        } else {
 	            Usuario usuarioActualizado = this.usuarioService.updatePasswordCheck(idUsuario, newPassword);
-	            if (usuarioActualizado != null) {
-	                return ResponseEntity.badRequest().body("La Contraseña No Coincide. Contraseña Actualizada.");
-	            } else {
-	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar la contraseña.");
-	            }
+	                return ResponseEntity.badRequest().body("La Contraseña no coincide. Contraseña actualizada.");
 	        }
 	    }
 
