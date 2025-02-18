@@ -7,12 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UsuarioDTO {
+public class PasswordDTO {
 
-	private int id;
-	private String password;
 	private String antiguaPassword;
     private String nuevaPassword;
-
-
+	
 }

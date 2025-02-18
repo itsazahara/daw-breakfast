@@ -42,6 +42,11 @@ public class EstablecimientoService {
 	
 	public EstablecimientoDTO save(EstablecimientoDTO dto) {
 		Establecimiento establecimiento = mapper.toEntity(dto);
+		
+		if(dto.getId() == null){
+			throw  new IllegalArgumentException("El establecimiento con ID " + dto.getId() + " es nulo");
+		}
+		
 		return mapper.toDTO(this.establecimientoRepository.save(establecimiento));
 	}
 	

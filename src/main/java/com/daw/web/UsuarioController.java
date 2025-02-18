@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.daw.persistence.entities.Usuario;
 import com.daw.service.UsuarioService;
+import com.daw.service.dtos.PasswordDTO;
 import com.daw.service.dtos.UsuarioDTO;
 import com.daw.service.mappers.UsuarioMapper;
 
@@ -82,20 +83,26 @@ public class UsuarioController {
 	}
 
 	@PostMapping("/{idUsuario}/checkPassword")
-	public ResponseEntity<String> checkPasswd(@PathVariable int idUsuario, @RequestBody UsuarioDTO usuarioDTO, @RequestParam String newPassword) {
-	    if (this.usuarioService.existUsuario(idUsuario)) {
-	        boolean passwdCheck = this.usuarioService.checkPassword(idUsuario, usuarioDTO.getPassword());
+	public ResponseEntity<String> checkPasswd(@PathVariable int idUsuario, @RequestBody UsuarioDTO usuarioDTO,
+			@RequestParam String newPassword) {
+		if (this.usuarioService.existUsuario(idUsuario)) {
+			boolean passwdCheck = this.usuarioService.checkPassword(idUsuario, usuarioDTO.getPassword());
 
-	        if (!passwdCheck) {
-	            return ResponseEntity.ok("Contraseña coincide correctamente.");
-	        } else {
-	            Usuario usuarioActualizado = this.usuarioService.updatePasswordCheck(idUsuario, newPassword);
-	                return ResponseEntity.badRequest().body("La Contraseña no coincide. Contraseña actualizada.");
-	        }
-	    }
+			if (passwdCheck) {
+				return ResponseEntity.ok("Contraseña coincide correctamente.");
+			} else {
+				Usuario usuarioActualizado = this.usuarioService.updatePasswordCheck(idUsuario, newPassword);
+				return ResponseEntity.badRequest().body("La Contraseña no coincide. Contraseña actualizada.");
+			}
+		}
 
-	    return ResponseEntity.notFound().build();
+		return ResponseEntity.notFound().build();
 	}
 
+	@PutMapping("/{id}/passwordChange")
+	public ResponseEntity<UsuarioDTO> actualizarPassword(@PathVariable int id, @RequestBody PasswordDTO passwordDTO) {
+		UsuarioDTO usuarioActualizado = usuarioService.updatePasswordIfMatch(id, passwordDTO);
+		return ResponseEntity.ok(usuarioActualizado);
+	}
 
 }

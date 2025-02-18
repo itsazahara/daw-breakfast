@@ -38,4 +38,12 @@ public class DesayunoMapper {
 
         return dto;
     }
+    
+    public Desayuno toEntity(DesayunoDTO dto) {
+    	Desayuno desayuno = new Desayuno();
+    	
+    	
+    	
+    	return desayuno;
+    }
 }

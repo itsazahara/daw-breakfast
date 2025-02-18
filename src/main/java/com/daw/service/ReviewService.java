@@ -1,5 +1,6 @@
 package com.daw.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,13 +68,16 @@ public class ReviewService {
 			throw new IllegalArgumentException("La puntuación debe estar entre 0 y 5.");
 		}
 
+		review.setFecha(LocalDateTime.now());
+		
 		Review savedReview = this.reviewRepository.save(review);
 		recalcularPuntuacion(savedReview.getIdDesayuno());
 		
-		Optional<DesayunoDTO> d = this.desayunoService.findById(review.getIdDesayuno());
+		Optional<Desayuno> d = this.desayunoService.findEntityById(review.getIdDesayuno());
 		Usuario u = this.usuarioService.findByIdUsuario(review.getIdUsuario()).get();
 		
-		this.usuarioService.createUsuario(u);
+		savedReview.setDesayuno(d.get());
+		savedReview.setUsuario(u);
 
 		return savedReview;
 	}

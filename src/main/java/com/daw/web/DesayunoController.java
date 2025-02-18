@@ -75,4 +75,13 @@ public class DesayunoController {
     public ResponseEntity<List<Desayuno>> getDesayunoByEstablecimiento(@PathVariable int idEstablecimiento){
         return ResponseEntity.ok(this.desayunoService.findByDesayunosEstablecimiento(idEstablecimiento));
     }
+    
+    @PutMapping("/{idDesayuno}/imagen")
+    public ResponseEntity<Desayuno> updateImagen(@RequestBody Desayuno desayuno, @PathVariable int idDesayuno, @RequestParam String imagen){
+    	if(this.desayunoService.existDesayuno(idDesayuno)) {
+    		return ResponseEntity.ok(this.desayunoService.updateDesayuno(idDesayuno, desayuno, imagen));
+    	}
+    	
+    	return ResponseEntity.notFound().build();
+    }
 }

@@ -25,6 +25,10 @@ public class EstablecimientoMapper {
     public Establecimiento toEntity(EstablecimientoDTO dto) {
         Establecimiento establecimiento = new Establecimiento();
         
+        if (dto.getId() != null) {
+            establecimiento.setId(dto.getId());
+        }
+        
         establecimiento.setNombre(dto.getNombre());
         establecimiento.setDescripcion(dto.getDescripcion());
         establecimiento.setUbicacion(dto.getUbicacion());

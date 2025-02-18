@@ -38,6 +38,10 @@ public class DesayunoService {
     public Optional<DesayunoDTO> findById(int idDesayuno){
         return this.desayunoRepository.findById(idDesayuno).map(desayunoMapper::toDTO);
     }
+    
+    public Optional<Desayuno> findEntityById(int idDesayuno){
+        return this.desayunoRepository.findById(idDesayuno);
+    }
 
     public boolean existDesayuno(int idDesayuno){
         return this.desayunoRepository.existsById(idDesayuno);
@@ -131,6 +135,20 @@ public class DesayunoService {
         double promedioDesayuno = reviewDesayuno.stream().mapToDouble(Review::getPuntuacion).average().orElse(0.0);
         desayuno.setPuntuacion(promedioDesayuno);
         this.desayunoRepository.save(desayuno);
+    }
+    
+    public Desayuno updateDesayuno(int idDesayuno, Desayuno desayuno, String imagen) {
+    	 desayuno = this.desayunoRepository.findById(idDesayuno).get();
+    	
+    	 if(desayuno.getImagen()== null) {
+    		 desayuno.setImagen("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuGbZQa0K6RcMzEEnIcozJKd6Cu8wGBk8ThA&s");
+    	 }else if(imagen.isEmpty()){
+    		 desayuno.setImagen("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuGbZQa0K6RcMzEEnIcozJKd6Cu8wGBk8ThA&s");
+    	 }else {
+    		 desayuno.setImagen(imagen);
+    	 }
+    	 
+    	 return desayuno;
     }
 
 }

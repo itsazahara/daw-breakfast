@@ -48,12 +48,8 @@ public class ReviewController {
 
 	// Crear una review (terminado)
 	@PostMapping
-	public ResponseEntity<Review> create(@RequestBody Review review, @RequestParam int idDesayuno) {
-		if (!this.desayunoService.existDesayuno(idDesayuno)) {
-			return ResponseEntity.notFound().build();
-		}
-
-		return new ResponseEntity<Review>(this.reviewService.create(review), HttpStatus.CREATED);
+	public ResponseEntity<Review> create(@RequestBody Review review) {
+		return ResponseEntity.ok(this.reviewService.create(review));
 	}
 
 	// Modificar una review (terminado)
